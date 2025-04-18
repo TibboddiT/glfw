@@ -1,6 +1,7 @@
 .{
-    .name = "glfw",
+    .name = .glfw,
     .version = "0.0.0",
+    .fingerprint = 0x3bbe0a5cebb1da28,
     .paths = .{
         "include/",
         "src/",
@@ -16,22 +17,22 @@
         .xcode_frameworks = .{
             .url = "https://github.com/TibboddiT/xcode-frameworks/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "122046ff3a953166f4bcac21ab5a998a27ba098e79cd48552b65d4ec179613011b4b",
+            .hash = "N-V-__8AAD7QqAVG_zqVMWb0vKwhq1qZiie6CY55zUhVK2XU",
         },
         .vulkan_headers = .{
             .url = "https://github.com/TibboddiT/vulkan-headers/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "1220e3bb588011412a21b05e2372b8261434bc174dce61139c8450e05bc8f0609735",
+            .hash = "N-V-__8AAAIGzwDju1iAEUEqIbBeI3K4JhQ0vBdNzmETnIRQ",
         },
         .wayland_headers = .{
             .url = "https://github.com/TibboddiT/wayland-headers/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "1220563c3d5603a02e61293c2c0223e01a3f298fb606bf0d108293b925434970a207",
+            .hash = "N-V-__8AAJfbCQBWPD1WA6AuYSk8LAIj4Bo_KY-2Br8NEIKT",
         },
         .x11_headers = .{
             .url = "https://github.com/TibboddiT/x11-headers/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "1220e79da2d5efd5e9dd8b6453f83a9ec79534e2e203b3331766b81e49171f3db474",
+            .hash = "N-V-__8AACbnQQDnnaLV79Xp3YtkU_g6nseVNOLiA7MzF2a4",
         },
     },
 }
