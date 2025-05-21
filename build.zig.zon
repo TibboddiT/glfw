@@ -17,12 +17,12 @@
         .xcode_frameworks = .{
             .url = "https://github.com/TibboddiT/xcode-frameworks/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "N-V-__8AAD7QqAVG_zqVMWb0vKwhq1qZiie6CY55zUhVK2XU",
+            .hash = "N-V-__8AAFbQqAXD0D2eWDWxbnQx3chxo4X4fJ3LZQD5KuV_",
         },
         .vulkan_headers = .{
             .url = "https://github.com/TibboddiT/vulkan-headers/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "N-V-__8AAAIGzwDju1iAEUEqIbBeI3K4JhQ0vBdNzmETnIRQ",
+            .hash = "N-V-__8AABkGzwB67cf4NfcbdKLUsgJPDjBzkLvicvDEdIq6",
         },
         .wayland_headers = .{
             .url = "https://github.com/TibboddiT/wayland-headers/archive/refs/heads/main.tar.gz",
