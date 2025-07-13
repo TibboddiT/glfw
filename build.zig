@@ -13,16 +13,20 @@ pub fn build(b: *std.Build) void {
     const use_gles = b.option(bool, "gles", "Build with GLES; not supported on MacOS") orelse false;
     const use_metal = b.option(bool, "metal", "Build with Metal; only supported on MacOS") orelse true;
 
-    const lib: *std.Build.Step.Compile = switch (shared) {
-        inline else => |x| switch (x) {
-            false => std.Build.addStaticLibrary,
-            true => std.Build.addSharedLibrary,
-        }(b, .{
-            .name = "glfw",
-            .target = target,
-            .optimize = optimize,
-        }),
-    };
+    const libModule = b.createModule(.{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const lib: *std.Build.Step.Compile = b.addLibrary(.{
+        .name = "glfw",
+        .root_module = libModule,
+        .linkage = switch (shared) {
+            false => .static,
+            true => .dynamic,
+        },
+    });
+
     lib.addIncludePath(b.path("include"));
     lib.linkLibC();
 

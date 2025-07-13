@@ -22,7 +22,7 @@
         .vulkan_headers = .{
             .url = "https://github.com/TibboddiT/vulkan-headers/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "N-V-__8AABkGzwB67cf4NfcbdKLUsgJPDjBzkLvicvDEdIq6",
+            .hash = "N-V-__8AAIgGzwA7j2oQluSieyRGY_M5cLksWrsk4Sb5REO1",
         },
         .wayland_headers = .{
             .url = "https://github.com/TibboddiT/wayland-headers/archive/refs/heads/main.tar.gz",
@@ -32,7 +32,7 @@
         .x11_headers = .{
             .url = "https://github.com/TibboddiT/x11-headers/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "N-V-__8AAD3nQQD-hZxzh_KQcUo7BzO7ADMos057evg24k5e",
+            .hash = "N-V-__8AAIrnQQAziiaT0F-AhDIMp1hpL1j1Fde0altETHPv",
         },
     },
 }
