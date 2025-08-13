@@ -135,30 +135,33 @@ pub fn build(b: *std.Build) void {
 
         // everything that isn't windows or mac is linux :P
         else => {
-            var sources = std.BoundedArray([]const u8, 64).init(0) catch unreachable;
-            var flags = std.BoundedArray([]const u8, 16).init(0) catch unreachable;
+            var sources = std.ArrayListUnmanaged([]const u8).initCapacity(b.allocator, 64) catch unreachable;
+            defer sources.deinit(b.allocator);
 
-            sources.appendSlice(&base_sources) catch unreachable;
-            sources.appendSlice(&linux_sources) catch unreachable;
+            var flags = std.ArrayListUnmanaged([]const u8).initCapacity(b.allocator, 16) catch unreachable;
+            defer flags.deinit(b.allocator);
+
+            sources.appendSlice(b.allocator, &base_sources) catch unreachable;
+            sources.appendSlice(b.allocator, &linux_sources) catch unreachable;
 
             if (use_x11) {
-                sources.appendSlice(&linux_x11_sources) catch unreachable;
-                flags.append("-D_GLFW_X11") catch unreachable;
+                sources.appendSlice(b.allocator, &linux_x11_sources) catch unreachable;
+                flags.append(b.allocator, "-D_GLFW_X11") catch unreachable;
             }
 
             if (use_wl) {
                 lib.root_module.addCMacro("WL_MARSHAL_FLAG_DESTROY", "1");
 
-                sources.appendSlice(&linux_wl_sources) catch unreachable;
-                flags.append("-D_GLFW_WAYLAND") catch unreachable;
-                flags.append("-Wno-implicit-function-declaration") catch unreachable;
+                sources.appendSlice(b.allocator, &linux_wl_sources) catch unreachable;
+                flags.append(b.allocator, "-D_GLFW_WAYLAND") catch unreachable;
+                flags.append(b.allocator, "-Wno-implicit-function-declaration") catch unreachable;
             }
 
-            flags.append(include_src_flag) catch unreachable;
+            flags.append(b.allocator, include_src_flag) catch unreachable;
 
             lib.addCSourceFiles(.{
-                .files = sources.slice(),
-                .flags = flags.slice(),
+                .files = sources.toOwnedSlice(b.allocator) catch unreachable,
+                .flags = flags.toOwnedSlice(b.allocator) catch unreachable,
             });
         },
     }
