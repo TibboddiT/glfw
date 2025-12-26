@@ -32,7 +32,7 @@
         .x11_headers = .{
             .url = "https://github.com/TibboddiT/x11-headers/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "N-V-__8AAIrnQQAziiaT0F-AhDIMp1hpL1j1Fde0altETHPv",
+            .hash = "N-V-__8AAJbnQQDNKDumND7BSLLZM1roG0ExTq8dQR5cAIB3",
         },
     },
 }

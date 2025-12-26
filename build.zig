@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
     const libModule = b.createModule(.{
         .target = target,
         .optimize = optimize,
+        .link_libc = true,
     });
 
     const lib: *std.Build.Step.Compile = b.addLibrary(.{
@@ -27,8 +28,7 @@ pub fn build(b: *std.Build) void {
         },
     });
 
-    lib.addIncludePath(b.path("include"));
-    lib.linkLibC();
+    lib.root_module.addIncludePath(b.path("include"));
 
     if (shared) lib.root_module.addCMacro("_GLFW_BUILD_DLL", "1");
 
@@ -45,12 +45,12 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
         })) |dep| {
-            lib.linkLibrary(dep.artifact("x11-headers"));
+            lib.root_module.linkLibrary(dep.artifact("x11-headers"));
             lib.installLibraryHeaders(dep.artifact("x11-headers"));
         }
         if (b.lazyDependency("wayland_headers", .{})) |dep| {
-            lib.addIncludePath(dep.path("wayland"));
-            lib.addIncludePath(dep.path("wayland-protocols"));
+            lib.root_module.addIncludePath(dep.path("wayland"));
+            lib.root_module.addIncludePath(dep.path("wayland-protocols"));
             lib.installHeadersDirectory(dep.path("wayland"), ".", .{});
             lib.installHeadersDirectory(dep.path("wayland-protocols"), ".", .{});
         }
@@ -74,24 +74,24 @@ pub fn build(b: *std.Build) void {
 
     switch (target.result.os.tag) {
         .windows => {
-            lib.linkSystemLibrary("gdi32");
-            lib.linkSystemLibrary("user32");
-            lib.linkSystemLibrary("shell32");
+            lib.root_module.linkSystemLibrary("gdi32", .{});
+            lib.root_module.linkSystemLibrary("user32", .{});
+            lib.root_module.linkSystemLibrary("shell32", .{});
 
             if (use_opengl) {
-                lib.linkSystemLibrary("opengl32");
+                lib.root_module.linkSystemLibrary("opengl32", .{});
             }
 
             if (use_gles) {
-                lib.linkSystemLibrary("GLESv3");
+                lib.root_module.linkSystemLibrary("GLESv3", .{});
             }
 
             const flags = [_][]const u8{ "-D_GLFW_WIN32", include_src_flag };
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &base_sources,
                 .flags = &flags,
             });
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &windows_sources,
                 .flags = &flags,
             });
@@ -99,35 +99,35 @@ pub fn build(b: *std.Build) void {
         .macos => {
             // Transitive dependencies, explicit linkage of these works around
             // ziglang/zig#17130
-            lib.linkFramework("CFNetwork");
-            lib.linkFramework("ApplicationServices");
-            lib.linkFramework("ColorSync");
-            lib.linkFramework("CoreText");
-            lib.linkFramework("ImageIO");
+            lib.root_module.linkFramework("CFNetwork", .{});
+            lib.root_module.linkFramework("ApplicationServices", .{});
+            lib.root_module.linkFramework("ColorSync", .{});
+            lib.root_module.linkFramework("CoreText", .{});
+            lib.root_module.linkFramework("ImageIO", .{});
 
             // Direct dependencies
-            lib.linkSystemLibrary("objc");
-            lib.linkFramework("IOKit");
-            lib.linkFramework("CoreFoundation");
-            lib.linkFramework("AppKit");
-            lib.linkFramework("CoreServices");
-            lib.linkFramework("CoreGraphics");
-            lib.linkFramework("Foundation");
+            lib.root_module.linkSystemLibrary("objc", .{});
+            lib.root_module.linkFramework("IOKit", .{});
+            lib.root_module.linkFramework("CoreFoundation", .{});
+            lib.root_module.linkFramework("AppKit", .{});
+            lib.root_module.linkFramework("CoreServices", .{});
+            lib.root_module.linkFramework("CoreGraphics", .{});
+            lib.root_module.linkFramework("Foundation", .{});
 
             if (use_metal) {
-                lib.linkFramework("Metal");
+                lib.root_module.linkFramework("Metal", .{});
             }
 
             if (use_opengl) {
-                lib.linkFramework("OpenGL");
+                lib.root_module.linkFramework("OpenGL", .{});
             }
 
             const flags = [_][]const u8{ "-D_GLFW_COCOA", include_src_flag };
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &base_sources,
                 .flags = &flags,
             });
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = &macos_sources,
                 .flags = &flags,
             });
@@ -159,7 +159,7 @@ pub fn build(b: *std.Build) void {
 
             flags.append(b.allocator, include_src_flag) catch unreachable;
 
-            lib.addCSourceFiles(.{
+            lib.root_module.addCSourceFiles(.{
                 .files = sources.toOwnedSlice(b.allocator) catch unreachable,
                 .flags = flags.toOwnedSlice(b.allocator) catch unreachable,
             });
