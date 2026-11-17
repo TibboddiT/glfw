@@ -17,7 +17,7 @@
         .xcode_frameworks = .{
             .url = "https://github.com/TibboddiT/xcode-frameworks/archive/refs/heads/main.tar.gz",
             .lazy = true,
-            .hash = "N-V-__8AAFbQqAXD0D2eWDWxbnQx3chxo4X4fJ3LZQD5KuV_",
+            .hash = "N-V-__8AAMHQqAWm4noZvVmiut0V_lNPjbVHlmO3jqe6UrEH",
         },
         .vulkan_headers = .{
             .url = "https://github.com/TibboddiT/vulkan-headers/archive/refs/heads/main.tar.gz",
