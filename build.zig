@@ -135,10 +135,10 @@ pub fn build(b: *std.Build) void {
 
         // everything that isn't windows or mac is linux :P
         else => {
-            var sources = std.ArrayListUnmanaged([]const u8).initCapacity(b.allocator, 64) catch unreachable;
+            var sources = std.ArrayList([]const u8).initCapacity(b.allocator, 64) catch unreachable;
             defer sources.deinit(b.allocator);
 
-            var flags = std.ArrayListUnmanaged([]const u8).initCapacity(b.allocator, 16) catch unreachable;
+            var flags = std.ArrayList([]const u8).initCapacity(b.allocator, 16) catch unreachable;
             defer flags.deinit(b.allocator);
 
             sources.appendSlice(b.allocator, &base_sources) catch unreachable;
